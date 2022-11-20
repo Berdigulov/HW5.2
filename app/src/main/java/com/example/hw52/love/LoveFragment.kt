@@ -6,7 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import com.example.hw52.App
+import com.example.hw52.R
 import com.example.hw52.databinding.FragmentLoveBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -22,16 +25,25 @@ class LoveFragment : Fragment() {
     ): View? {
         binding = FragmentLoveBinding.inflate(inflater)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initClickers()
     }
 
     private fun initClickers(){
         with(binding){
             btnCalculate.setOnClickListener {
+                Log.d("dad","click",)
                 App.api.calculateLove(firstEt.text.toString(),secondEt.text.toString()).enqueue(object : Callback<LoveModel>{
                     override fun onResponse(call: Call<LoveModel>, response: Response<LoveModel>) {
                         if(response.isSuccessful){
                             Log.e("ololo", "onResponse: ${response.body()?.percentage}", )
+                            val all = response.body()
+                            val bundle = Bundle()
+                            bundle.putSerializable(KEY_FOR_ALL, all)
+                            findNavController().navigate(R.id.resultFragment,bundle)
                         }
                     }
 
@@ -40,8 +52,13 @@ class LoveFragment : Fragment() {
                     }
 
                 })
+
             }
         }
+    }
+
+    companion object{
+        const val KEY_FOR_ALL = "key_all"
     }
 
 }

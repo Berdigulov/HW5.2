@@ -15,4 +15,9 @@
         android:name="com.example.hw52.love.LoveFragment"
         android:label="fragment_love"
         tools:layout="@layout/fragment_love" />
+    <fragment
+        android:id="@+id/resultFragment"
+        android:name="com.example.hw52.ResultFragment"
+        android:label="fragment_result"
+        tools:layout="@layout/fragment_result" />
 </navigation>
