@@ -7,8 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import com.example.hw52.App
+import com.example.hw52.LoveViewModel
 import com.example.hw52.R
 import com.example.hw52.databinding.FragmentLoveBinding
 import retrofit2.Call
@@ -18,6 +22,7 @@ import retrofit2.Response
 class LoveFragment : Fragment() {
 
     private lateinit var binding: FragmentLoveBinding
+    val viewModel:LoveViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,23 +40,13 @@ class LoveFragment : Fragment() {
     private fun initClickers(){
         with(binding){
             btnCalculate.setOnClickListener {
-                Log.d("dad","click",)
-                App.api.calculateLove(firstEt.text.toString(),secondEt.text.toString()).enqueue(object : Callback<LoveModel>{
-                    override fun onResponse(call: Call<LoveModel>, response: Response<LoveModel>) {
-                        if(response.isSuccessful){
-                            Log.e("ololo", "onResponse: ${response.body()?.percentage}", )
-                            val all = response.body()
-                            val bundle = Bundle()
-                            bundle.putSerializable(KEY_FOR_ALL, all)
-                            findNavController().navigate(R.id.resultFragment,bundle)
-                        }
-                    }
-
-                    override fun onFailure(call: Call<LoveModel>, t: Throwable) {
-                        Log.e("ololo", "onFailure: ${t.message}", )
-                    }
-
-                })
+                viewModel.liveModel(firstEt.text.toString(),secondEt.text.toString()).observe(viewLifecycleOwner,
+                    Observer {
+                        val all = it
+                        val bundle = Bundle()
+                        bundle.putSerializable(KEY_FOR_ALL, all)
+                        findNavController().navigate(R.id.resultFragment,bundle)
+                    })
 
             }
         }
