@@ -3,7 +3,9 @@ package com.example.hw52
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.hw52.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -14,9 +16,4 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
-    private fun initClickers(){
-        with(binding){
-
-        }
-    }
 }

@@ -47,6 +47,7 @@
         android:layout_height="wrap_content"
         android:text="Second Name"
         android:textSize="24sp"
+        android:maxLines="1"
         android:textColor="@color/purple_200"
         />
 
